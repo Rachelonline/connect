@@ -1,5 +1,5 @@
-//var mongojs = require("mongojs");
-var db = null;//mongojs('localhost:27017/myGame', ['account','progress']);
+var mongojs = require("mongojs");
+var db = mongojs('mongodb://rachel:S#8121linnil@ds133657.mlab.com:33657/heroku_bjgghg9f', ['account']);
 
 var express = require('express');
 var app = express();
@@ -265,27 +265,27 @@ var DEBUG = true;
 
 var isValidPassword = function(data,cb){
 	return cb(true);
-	/*db.account.find({username:data.username,password:data.password},function(err,res){
+	db.account.find({username:data.username,password:data.password},function(err,res){
 		if(res.length > 0)
 			cb(true);
 		else
 			cb(false);
-	});*/
+	});
 }
 var isUsernameTaken = function(data,cb){
 	return cb(false);
-	/*db.account.find({username:data.username},function(err,res){
+	db.account.find({username:data.username},function(err,res){
 		if(res.length > 0)
 			cb(true);
 		else
 			cb(false);
-	});*/
+	});
 }
 var addUser = function(data,cb){
 	return cb();
-	/*db.account.insert({username:data.username,password:data.password},function(err){
+	db.account.insert({username:data.username,password:data.password},function(err){
 		cb();
-	});*/
+	});
 }
 
 var io = require('socket.io')(serv,{});
@@ -361,23 +361,6 @@ setInterval(function(){
 	
 },1000/25);
 
-/*
-var profiler = require('v8-profiler');
-var fs = require('fs');
-var startProfiling = function(duration){
-	profiler.startProfiling('1', true);
-	setTimeout(function(){
-		var profile1 = profiler.stopProfiling('1');
-		
-		profile1.export(function(error, result) {
-			fs.writeFile('./profile.cpuprofile', result);
-			profile1.delete();
-			console.log("Profile saved.");
-		});
-	},duration);	
-}
-startProfiling(10000);
-*/
 
 
 

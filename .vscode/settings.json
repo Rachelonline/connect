@@ -1,3 +1,19 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "sqltools.connections": [
+        {
+            "connectionTimeout": 60,
+            "database": "Robots",
+            "driver": "MySQL",
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "name": "MySQLRobot",
+            "password": "S#8121linnil",
+            "port": 3306,
+            "previewLimit": 50,
+            "server": "localhost",
+            "username": "rachel"
+        }
+    ]
 }
