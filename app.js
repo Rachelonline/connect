@@ -1,6 +1,7 @@
 var mongojs = require("mongojs");
 var db = mongojs('mongodb://rachel:S#8121linnil@ds133657.mlab.com:33657/heroku_bjgghg9f', ['account']);
 
+
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
@@ -170,6 +171,31 @@ Player.getAllInitPack = function(){
 	return players;
 }
 
+var isValidPassword = function(data,cb){
+	db.account.find({username:data.username,password:data.password},function(err,res){
+		if(err) return err;
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
+}
+var isUsernameTaken = function(data,cb){
+	db.account.find({username:data.username},function(err,res){
+		if(err) return err;
+		if(res.length > 0)
+			cb(true);
+		else
+			cb(false);
+	});
+}
+var addUser = function(data,cb){
+	db.account.insert({username:data.username,password:data.password},function(err){
+		if(err) return err;
+		cb();
+	});
+}
+
 Player.onDisconnect = function(socket){
 	delete Player.list[socket.id];
 	removePack.player.push(socket.id);
@@ -262,31 +288,6 @@ Bullet.getAllInitPack = function(){
 }
 
 var DEBUG = true;
-
-var isValidPassword = function(data,cb){
-	return cb(true);
-	db.account.find({username:data.username,password:data.password},function(err,res){
-		if(res.length > 0)
-			cb(true);
-		else
-			cb(false);
-	});
-}
-var isUsernameTaken = function(data,cb){
-	return cb(false);
-	db.account.find({username:data.username},function(err,res){
-		if(res.length > 0)
-			cb(true);
-		else
-			cb(false);
-	});
-}
-var addUser = function(data,cb){
-	return cb();
-	db.account.insert({username:data.username,password:data.password},function(err){
-		cb();
-	});
-}
 
 var io = require('socket.io')(serv,{});
 io.sockets.on('connection', function(socket){
